@@ -10,7 +10,6 @@ public class StoreApplication {
 public static void main(String[] args) {
 	ApplicationContext context =  SpringApplication.run(StoreApplication.class, args);
 	OrderService orderService = context.getBean(OrderService.class);
-	// orderService.setPaymentService(new StripePaymentService());
 	orderService.placeOrder();
 }
 
