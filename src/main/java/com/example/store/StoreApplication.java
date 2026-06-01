@@ -10,10 +10,10 @@ public class StoreApplication {
 
 public static void main(String[] args) {
 	ApplicationContext context =  SpringApplication.run(StoreApplication.class, args);
-//	OrderService orderService = context.getBean(OrderService.class);
-//	orderService.placeOrder();
-	NotificationManager notificationManager = context.getBean(NotificationManager.class);
-	notificationManager.notify("Your order has been placed successfully!");
+	OrderService orderService = context.getBean(OrderService.class);
+	orderService.placeOrder();
+//	NotificationManager notificationManager = context.getBean(NotificationManager.class);
+//	notificationManager.notify("Your order has been placed successfully!");
 }
 
 }
