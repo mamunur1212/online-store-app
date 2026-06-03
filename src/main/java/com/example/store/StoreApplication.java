@@ -2,8 +2,11 @@ package com.example.store;
 
 
 import com.example.store.entities.Address;
+import com.example.store.entities.Profile;
 import com.example.store.entities.Tag;
 import com.example.store.entities.User;
+
+import java.time.LocalDate;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -23,9 +26,14 @@ public class StoreApplication {
 		user.addTag(vip);
 		user.addTag(earlyAdopter);
 
+		Profile profile = new Profile(null, "Loves coding", "01700000000",
+				LocalDate.of(1995, 1, 1), 100);
+		user.setProfile(profile);
+
 		System.out.println(user);
 		System.out.println(user.getAddresses());
 		System.out.println(user.getTags());
+		System.out.println(user.getProfile());
 	}
 
 }

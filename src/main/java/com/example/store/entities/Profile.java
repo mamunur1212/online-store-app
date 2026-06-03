@@ -12,6 +12,11 @@ public class Profile {
 	@Column(name = "id")
 	private Long id;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	@JoinColumn(name = "id")
+	private User user;
+
 	@Column(name = "bio")
 	private String bio;
 
@@ -42,6 +47,14 @@ public class Profile {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getBio() {

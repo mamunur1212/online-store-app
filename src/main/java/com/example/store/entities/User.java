@@ -36,6 +36,9 @@ public class User {
 	)
 	private Set<Tag> tags = new HashSet<>();
 
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Profile profile;
+
 	public User() {
 	
 	}
@@ -112,6 +115,21 @@ public class User {
 	public void removeTag(Tag tag) {
 		tags.remove(tag);
 		tag.getUsers().remove(this);
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		if (profile == null) {
+			if (this.profile != null) {
+				this.profile.setUser(null);
+			}
+		} else {
+			profile.setUser(this);
+		}
+		this.profile = profile;
 	}
 
 	@Override
