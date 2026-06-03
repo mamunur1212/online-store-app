@@ -39,12 +39,16 @@ public class StoreApplication {
 		category.addProduct(phone);
 		category.addProduct(laptop);
 
+		user.addProduct(phone);
+		user.addProduct(laptop);
+
 		System.out.println(user);
 		System.out.println(user.getAddresses());
 		System.out.println(user.getTags());
 		System.out.println(user.getProfile());
 		System.out.println(category);
 		System.out.println(category.getProducts());
+		System.out.println(user.getProducts());
 	}
 
 }

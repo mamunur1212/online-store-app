@@ -39,6 +39,14 @@ public class User {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Profile profile;
 
+	@ManyToMany
+	@JoinTable(
+			name = "user_products",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "product_id")
+	)
+	private Set<Product> products = new HashSet<>();
+
 	public User() {
 	
 	}
@@ -115,6 +123,24 @@ public class User {
 	public void removeTag(Tag tag) {
 		tags.remove(tag);
 		tag.getUsers().remove(this);
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
+
+	public void addProduct(Product product) {
+		products.add(product);
+		product.getUsers().add(this);
+	}
+
+	public void removeProduct(Product product) {
+		products.remove(product);
+		product.getUsers().remove(this);
 	}
 
 	public Profile getProfile() {
