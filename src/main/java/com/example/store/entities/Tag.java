@@ -2,6 +2,9 @@ package com.example.store.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "tags")
 public class Tag {
@@ -13,6 +16,9 @@ public class Tag {
 
 	@Column(nullable = false, name = "name")
 	private String name;
+
+	@ManyToMany(mappedBy = "tags")
+	private Set<User> users = new HashSet<>();
 
 	public Tag() {
 
@@ -37,6 +43,14 @@ public class Tag {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	@Override
