@@ -23,7 +23,8 @@ public class Address {
 	@Column(nullable = false, name = "state")
 	private String state;
 
-	@ManyToOne
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
@@ -31,13 +32,12 @@ public class Address {
 
 	}
 
-	public Address(Long id, String street, String city, String zipcode, String state, User user) {
+	public Address(Long id, String street, String city, String zipcode, String state) {
 		this.id = id;
 		this.street = street;
 		this.city = city;
 		this.zipcode = zipcode;
 		this.state = state;
-		this.user = user;
 	}
 
 	public Long getId() {

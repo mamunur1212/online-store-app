@@ -3,6 +3,9 @@ package com.example.store.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -19,6 +22,9 @@ public class User {
 	
 	@Column(nullable = false, name = "password")
 	private String password;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Address> addresses = new ArrayList<>();
 
 	public User() {
 	
@@ -61,6 +67,25 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public void addAddress(Address address) {
+		addresses.add(address);
+		address.setUser(this);
+	}
+
+	public void removeAddress(Address address) {
+		addresses.remove(address);
+		address.setUser(null);
+	}
+
 	@Override
 	public String toString() {
 		return "User{id=" + id + ", name='" + name + "', email='" + email + "'}";
