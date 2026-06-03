@@ -4,7 +4,9 @@ package com.example.store.entities;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +27,14 @@ public class User {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Address> addresses = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(
+			name = "user_tags",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "tag_id")
+	)
+	private Set<Tag> tags = new HashSet<>();
 
 	public User() {
 	
@@ -84,6 +94,24 @@ public class User {
 	public void removeAddress(Address address) {
 		addresses.remove(address);
 		address.setUser(null);
+	}
+
+	public Set<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public void addTag(Tag tag) {
+		tags.add(tag);
+		tag.getUsers().add(this);
+	}
+
+	public void removeTag(Tag tag) {
+		tags.remove(tag);
+		tag.getUsers().remove(this);
 	}
 
 	@Override
