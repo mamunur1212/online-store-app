@@ -29,7 +29,7 @@ public static void main(String[] args) {
 
 	// service.showEntityStates();
 	
-	service.fetchAddress();
+	service.deleteRelated();
 
 	}
 
