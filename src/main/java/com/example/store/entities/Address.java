@@ -32,8 +32,7 @@ public class Address {
 
 	}
 
-	public Address(Long id, String street, String city, String zipcode, String state) {
-		this.id = id;
+	public Address(String street, String city, String zipcode, String state) {
 		this.street = street;
 		this.city = city;
 		this.zipcode = zipcode;
