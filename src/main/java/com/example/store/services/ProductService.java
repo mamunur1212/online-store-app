@@ -59,4 +59,11 @@ public class ProductService {
 		// User owns the wishlist join table, so saving the user writes the rows.
 		userRepository.save(user);
 	}
+
+	@Transactional
+	public void deleteProduct() {
+		// The wishlist FK on product_id is ON DELETE CASCADE, so the DB clears
+		// any wishlist rows for this product when it is removed.
+		productRepository.deleteById(2L);
+	}
 }
