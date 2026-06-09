@@ -41,7 +41,7 @@ public class User {
 
 	@ManyToMany
 	@JoinTable(
-			name = "user_products",
+			name = "wishlist",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "product_id")
 	)
