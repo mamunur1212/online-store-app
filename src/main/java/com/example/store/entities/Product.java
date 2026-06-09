@@ -21,7 +21,7 @@ public class Product {
 	@Column(nullable = false, name = "price")
 	private BigDecimal price;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;
 
@@ -32,8 +32,7 @@ public class Product {
 
 	}
 
-	public Product(Long id, String name, BigDecimal price) {
-		this.id = id;
+	public Product(String name, BigDecimal price) {
 		this.name = name;
 		this.price = price;
 	}
