@@ -2,8 +2,10 @@ package com.example.store.services;
 
 import com.example.store.entities.Category;
 import com.example.store.entities.Product;
+import com.example.store.entities.User;
 import com.example.store.repositories.CategoryRepository;
 import com.example.store.repositories.ProductRepository;
+import com.example.store.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,12 @@ import java.math.BigDecimal;
 public class ProductService {
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
+	private final UserRepository userRepository;
 
-	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
 		this.productRepository = productRepository;
 		this.categoryRepository = categoryRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Transactional
@@ -40,5 +44,19 @@ public class ProductService {
 		product.setCategory(category);
 
 		productRepository.save(product);
+	}
+
+	@Transactional
+	public void addProductsToWishlist() {
+		// Fetch an existing user.
+		User user = userRepository.findById(1L).orElseThrow();
+
+		// Add all existing products to the user's wishlist.
+		for (Product product : productRepository.findAll()) {
+			user.addProduct(product);
+		}
+
+		// User owns the wishlist join table, so saving the user writes the rows.
+		userRepository.save(user);
 	}
 }

@@ -26,7 +26,7 @@ public static void main(String[] args) {
 	
 	var service =  context.getBean(ProductService.class);
 
-	service.createProductForExistingCategory();
+	service.addProductsToWishlist();
 
 	}
 
