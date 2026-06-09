@@ -46,4 +46,9 @@ public class UserService {
 		System.out.println(profile.getUser().getEmail());
 		
 	}
+	
+	public void fetchUser() {
+		User user = userRepository.findByEmail("1@de").orElseThrow();
+		System.out.println("User " + user);
+	}
 }
