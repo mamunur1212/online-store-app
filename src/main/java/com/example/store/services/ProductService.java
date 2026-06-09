@@ -120,4 +120,8 @@ public class ProductService {
 		// Sets price = 9.99 for every product in category 1. Needs a transaction.
 		productRepository.updatePriceByCategory(new BigDecimal("9.99"), (byte) 1);
 	}
+	
+	public void fetchProducts() {
+		productRepository.findByCategory(categoryRepository.findById((byte) 1).orElseThrow());
+	}
 }
