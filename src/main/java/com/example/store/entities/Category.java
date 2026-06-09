@@ -24,8 +24,7 @@ public class Category {
 
 	}
 
-	public Category(Byte id, String name) {
-		this.id = id;
+	public Category(String name) {
 		this.name = name;
 	}
 

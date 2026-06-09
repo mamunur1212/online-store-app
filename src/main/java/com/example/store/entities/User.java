@@ -41,7 +41,7 @@ public class User {
 
 	@ManyToMany
 	@JoinTable(
-			name = "user_products",
+			name = "wishlist",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "product_id")
 	)
@@ -56,6 +56,12 @@ public class User {
 		}
 	public User(Long id, String name, String email, String password) {
 		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User(String name, String email, String password) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
