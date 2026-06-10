@@ -7,6 +7,8 @@ import com.example.store.repositories.CategoryRepository;
 import com.example.store.repositories.ProductRepository;
 import com.example.store.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -121,10 +123,26 @@ public class ProductService {
 		productRepository.updatePriceByCategory(new BigDecimal("9.99"), (byte) 1);
 	}
 	
+//	@Transactional
+//	public void fetchProducts() {
+//		// var product = productRepository.findByCategory(categoryRepository.findById((byte) 1).orElseThrow());
+//		var product = productRepository.findProducts(BigDecimal.valueOf(1), BigDecimal.valueOf(15));
+//		System.out.println("Products in category 1: " + product);
+//	}
+
 	@Transactional
 	public void fetchProducts() {
-		// var product = productRepository.findByCategory(categoryRepository.findById((byte) 1).orElseThrow());
-		var product = productRepository.findProducts(BigDecimal.valueOf(1), BigDecimal.valueOf(15));
-		System.out.println("Products in category 1: " + product);
+		var product = new Product();
+		product.setName("laptop");
+		
+		var matcher = ExampleMatcher.matching()
+							  .withIncludeNullValues()
+							  .withIgnorePaths("id", "description")
+							  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+		
+		var example = Example.of(product, matcher);
+		
+		var products = productRepository.findAll(example);
+		products.forEach(System.out::println);
 	}
 }
