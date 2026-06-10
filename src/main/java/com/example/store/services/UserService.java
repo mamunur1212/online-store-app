@@ -46,4 +46,16 @@ public class UserService {
 		System.out.println(profile.getUser().getEmail());
 		
 	}
+	
+	@Transactional
+	public void fetchUser() {
+//		User user = userRepository.findByEmail("1@de").orElseThrow();
+//		System.out.println("User " + user);
+		
+		var users = userRepository.findAllWithTags();
+		users.forEach(u -> {
+			System.out.println("User " + u);
+			u.getAddresses().forEach(a -> System.out.println("Address " + a));
+		});
+	}
 }

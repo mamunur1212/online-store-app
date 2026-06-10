@@ -21,6 +21,9 @@ public class Product {
 	@Column(nullable = false, name = "price")
 	private BigDecimal price;
 
+	@Column(name = "description")
+	private String description;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;
@@ -59,6 +62,14 @@ public class Product {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Category getCategory() {
