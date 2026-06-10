@@ -121,7 +121,10 @@ public class ProductService {
 		productRepository.updatePriceByCategory(new BigDecimal("9.99"), (byte) 1);
 	}
 	
+	@Transactional
 	public void fetchProducts() {
-		productRepository.findByCategory(categoryRepository.findById((byte) 1).orElseThrow());
+		// var product = productRepository.findByCategory(categoryRepository.findById((byte) 1).orElseThrow());
+		var product = productRepository.findProducts(BigDecimal.valueOf(1), BigDecimal.valueOf(15));
+		System.out.println("Products in category 1: " + product);
 	}
 }
