@@ -28,7 +28,7 @@ public static void main(String[] args) {
 	
 	var productService =  context.getBean(ProductService.class);
 	
-	productService.fetchProductsByCriteria();
+	productService.fetchProductsBySpecifications("Laptop", BigDecimal.valueOf(1), BigDecimal.valueOf(15));
 
 	}
 
