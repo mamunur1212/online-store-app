@@ -6,7 +6,10 @@ import com.example.store.entities.User;
 import com.example.store.repositories.CategoryRepository;
 import com.example.store.repositories.ProductRepository;
 import com.example.store.repositories.UserRepository;
+import com.example.store.repositories.specifications.ProductSpec;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -121,10 +124,68 @@ public class ProductService {
 		productRepository.updatePriceByCategory(new BigDecimal("9.99"), (byte) 1);
 	}
 	
+//	@Transactional
+//	public void fetchProducts() {
+//		// var product = productRepository.findByCategory(categoryRepository.findById((byte) 1).orElseThrow());
+//		var product = productRepository.findProducts(BigDecimal.valueOf(1), BigDecimal.valueOf(15));
+//		System.out.println("Products in category 1: " + product);
+//	}
+
 	@Transactional
 	public void fetchProducts() {
-		// var product = productRepository.findByCategory(categoryRepository.findById((byte) 1).orElseThrow());
-		var product = productRepository.findProducts(BigDecimal.valueOf(1), BigDecimal.valueOf(15));
-		System.out.println("Products in category 1: " + product);
+		var product = new Product();
+		product.setName("laptop");
+		
+		var matcher = ExampleMatcher.matching()
+							  .withIncludeNullValues()
+							  .withIgnorePaths("id", "description")
+							  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+		
+		var example = Example.of(product, matcher);
+		
+		var products = productRepository.findAll(example);
+		products.forEach(System.out::println);
+	}
+
+	public void fetchProductsByCriteria() {
+		var products = productRepository.findProductsByCriteria("Laptop", BigDecimal.valueOf(1), BigDecimal.valueOf(15));
+		products.forEach(System.out::println);
+	}
+
+	public void fetchProductsBySpecifications(String name, BigDecimal minPrice, BigDecimal maxPrice) {
+		Specification<Product> spec = Specification.unrestricted();
+		
+		if (name != null) {
+			spec = spec.and(ProductSpec.hasName(name));
+		}
+		if (minPrice != null) {
+			spec = spec.and(ProductSpec.hasPriceGreaterThanOrEqualTo(minPrice));
+		}
+		if (maxPrice != null) {
+			spec = spec.and(ProductSpec.hasPriceLessThanOrEqualTo(maxPrice));
+		}
+		
+		productRepository.findAll(spec).forEach(System.out::println);
+	}
+
+	public void fetchSortedProducts() {
+		var sort = Sort.by("name").and(
+				Sort.by("price").descending()
+		);
+		
+		productRepository.findAll(sort).forEach(System.out::println);
+	}
+	
+	public void fetchPaginatedProducts(int pageNumber, int size) {
+		PageRequest pageRequest = PageRequest.of(pageNumber, size);
+		Page<Product> page = productRepository.findAll(pageRequest);
+		
+		var products = page.getContent();
+		products.forEach(System.out::println);
+		
+		var totalPages = page.getTotalPages();
+		var totalElements = page.getTotalElements();
+		System.out.println("Total Pages: " + totalPages);
+		System.out.println("Total Elements: " + totalElements);
 	}
 }

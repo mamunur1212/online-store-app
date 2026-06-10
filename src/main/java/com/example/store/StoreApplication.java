@@ -26,9 +26,9 @@ public class StoreApplication {
 public static void main(String[] args) {
 	ApplicationContext context = SpringApplication.run(StoreApplication.class, args);
 	
-	var profileService =  context.getBean(ProfileService.class);
+	var productService =  context.getBean(ProductService.class);
 	
-	profileService.fetchProfilesByLoyaltyPoints(2);
+	productService.fetchPaginatedProducts(0, 10);
 
 	}
 
