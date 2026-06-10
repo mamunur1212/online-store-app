@@ -1,69 +1,34 @@
 package com.example.store.entities;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "categories")
 public class Category {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Byte id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Byte id;
+  @Column(name = "name")
+  private String name;
 
-	@Column(nullable = false, name = "name")
-	private String name;
+  @OneToMany(mappedBy = "category")
+  private Set<Product> products = new HashSet<>();
 
-	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Product> products = new ArrayList<>();
+  public Category(String name) {
+    this.name = name;
+  }
 
-	public Category() {
-
-	}
-
-	public Category(String name) {
-		this.name = name;
-	}
-
-	public Byte getId() {
-		return id;
-	}
-
-	public void setId(Byte id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
-	public void addProduct(Product product) {
-		products.add(product);
-		product.setCategory(this);
-	}
-
-	public void removeProduct(Product product) {
-		products.remove(product);
-		product.setCategory(null);
-	}
-
-	@Override
-	public String toString() {
-		return "Category{id=" + id + ", name='" + name + "'}";
-	}
+  public Category(byte id) {
+    this.id = id;
+  }
 }

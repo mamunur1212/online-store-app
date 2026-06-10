@@ -1,171 +1,77 @@
 package com.example.store.entities;
 
-
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.*;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
-	
-	@Column(nullable = false, name = "name")
-	private String name;
-	
-	@Column(nullable = false, name = "email", unique = true)
-	private String email;
-	
-	@Column(nullable = false, name = "password")
-	private String password;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Address> addresses = new ArrayList<>();
+  @Column(name = "name")
+  private String name;
 
-	@ManyToMany
-	@JoinTable(
-			name = "user_tags",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "tag_id")
-	)
-	private Set<Tag> tags = new HashSet<>();
+  @Column(name = "email")
+  private String email;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Profile profile;
+  @Column(name = "password")
+  private String password;
 
-	@ManyToMany
-	@JoinTable(
-			name = "wishlist",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "product_id")
-	)
-	private Set<Product> products = new HashSet<>();
+  @OneToMany(
+      mappedBy = "user",
+      cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+      orphanRemoval = true)
+  @Builder.Default
+  private List<Address> addresses = new ArrayList<>();
 
-	public User() {
-	
-	}
+  public void addAddress(Address address) {
+    addresses.add(address);
+    address.setUser(this);
+  }
 
-	public Long getId() {
-			return id;
-		}
-	public User(Long id, String name, String email, String password) {
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-	}
+  public void removeAddress(Address address) {
+    addresses.remove(address);
+    address.setUser(null);
+  }
 
-	public User(String name, String email, String password) {
-		this.name = name;
-		this.email = email;
-		this.password = password;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private Profile profile;
 
-	public List<Address> getAddresses() {
-		return addresses;
-	}
+  @ManyToMany
+  @JoinTable(
+      name = "wishlist",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "product_id"))
+  private Set<Product> favoriteProducts = new HashSet<>();
 
-	public void setAddresses(List<Address> addresses) {
-		this.addresses = addresses;
-	}
+  public void addFavoriteProduct(Product product) {
+    favoriteProducts.add(product);
+  }
 
-	public void addAddress(Address address) {
-		addresses.add(address);
-		address.setUser(this);
-	}
-
-	public void removeAddress(Address address) {
-		addresses.remove(address);
-		address.setUser(null);
-	}
-
-	public Set<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
-	}
-
-	public void addTag(Tag tag) {
-		tags.add(tag);
-		tag.getUsers().add(this);
-	}
-
-	public void removeTag(Tag tag) {
-		tags.remove(tag);
-		tag.getUsers().remove(this);
-	}
-
-	public Set<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(Set<Product> products) {
-		this.products = products;
-	}
-
-	public void addProduct(Product product) {
-		products.add(product);
-		product.getUsers().add(this);
-	}
-
-	public void removeProduct(Product product) {
-		products.remove(product);
-		product.getUsers().remove(this);
-	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		if (profile == null) {
-			if (this.profile != null) {
-				this.profile.setUser(null);
-			}
-		} else {
-			profile.setUser(this);
-		}
-		this.profile = profile;
-	}
-
-	@Override
-	public String toString() {
-		return "User{id=" + id + ", name='" + name + "', email='" + email + "'}";
-	}
+  @Override
+  public String toString() {
+    return getClass().getSimpleName()
+        + "("
+        + "id = "
+        + id
+        + ", "
+        + "name = "
+        + name
+        + ", "
+        + "email = "
+        + email
+        + ")";
+  }
 }
