@@ -28,7 +28,7 @@ public static void main(String[] args) {
 	
 	var productService =  context.getBean(ProductService.class);
 	
-	productService.fetchProducts();
+	productService.fetchProductsByCriteria();
 
 	}
 

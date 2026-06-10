@@ -145,4 +145,9 @@ public class ProductService {
 		var products = productRepository.findAll(example);
 		products.forEach(System.out::println);
 	}
+
+	public void fetchProductsByCriteria() {
+		var products = productRepository.findProductsByCriteria("Laptop", BigDecimal.valueOf(1), BigDecimal.valueOf(15));
+		products.forEach(System.out::println);
+	}
 }
