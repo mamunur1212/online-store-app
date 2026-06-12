@@ -20,7 +20,7 @@ public class UserController {
 
   @GetMapping
   public List<UserDto> getUsers(
-      @RequestParam(required = false, defaultValue = "", name = "sort") String sortBy) {
+      @RequestParam(required = false, defaultValue = "", name = "sortBy") String sortBy) {
     if (!Set.of("name", "email").contains(sortBy)) {
       sortBy = "name";
     }
