@@ -7,7 +7,9 @@ import com.example.store.dtos.UserDto;
 import com.example.store.entities.User;
 import com.example.store.mapper.UserMapper;
 import com.example.store.repositories.UserRepository;
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -43,8 +45,11 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<UserDto> createUser(
-      @RequestBody RegisterUserRequest request, UriComponentsBuilder uriBuilder) {
+  public ResponseEntity<?> createUser(
+      @Valid @RequestBody RegisterUserRequest request, UriComponentsBuilder uriBuilder) {
+    if (userRepository.existsByEmail(request.getEmail())) {
+      return ResponseEntity.badRequest().body(Map.of("email", "Email is already registered."));
+    }
     User user = userMapper.toEntity(request);
     userRepository.save(user);
 
