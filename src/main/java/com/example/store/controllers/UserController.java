@@ -1,5 +1,6 @@
 package com.example.store.controllers;
 
+import com.example.store.dtos.ChangePasswordRequest;
 import com.example.store.dtos.RegisterUserRequest;
 import com.example.store.dtos.UpdateUserRequest;
 import com.example.store.dtos.UserDto;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -74,6 +76,25 @@ public class UserController {
     }
 
     userRepository.delete(user);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/{id}/change-password")
+  public ResponseEntity<Void> changePassword(
+      @PathVariable Long id, @RequestBody ChangePasswordRequest request) {
+    User user = userRepository.findById(id).orElse(null);
+    if (user == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    if (!user.getPassword().equals(request.getOldPassword())) {
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    // user.setPassword(request.getNewPassword());
+    userMapper.changePassword(request, user);
+    userRepository.save(user);
+
     return ResponseEntity.noContent().build();
   }
 }

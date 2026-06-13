@@ -1,5 +1,6 @@
 package com.example.store.mapper;
 
+import com.example.store.dtos.ChangePasswordRequest;
 import com.example.store.dtos.RegisterUserRequest;
 import com.example.store.dtos.UpdateUserRequest;
 import com.example.store.dtos.UserDto;
@@ -14,4 +15,6 @@ public interface UserMapper {
   User toEntity(RegisterUserRequest request);
 
   void update(UpdateUserRequest request, @MappingTarget User user);
+
+  void changePassword(ChangePasswordRequest request, @MappingTarget User user);
 }
