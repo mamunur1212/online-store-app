@@ -27,13 +27,33 @@ public class Cart {
   @Builder.Default
   private Set<CartItem> items = new LinkedHashSet<>();
 
-  public void addItem(CartItem item) {
-    items.add(item);
-    item.setCart(this);
+  public CartItem getItem(Long productId) {
+    return items.stream()
+        .filter(item -> item.getProduct().getId().equals(productId))
+        .findFirst()
+        .orElse(null);
+  }
+
+  public CartItem addItem(Product product) {
+    var cartItem = getItem(product.getId());
+    if (cartItem != null) {
+      cartItem.setQuantity(cartItem.getQuantity() + 1);
+    } else {
+      cartItem = new CartItem();
+      cartItem.setProduct(product);
+      cartItem.setQuantity(1);
+      cartItem.setCart(this);
+      items.add(cartItem);
+    }
+    return cartItem;
   }
 
   public void removeItem(CartItem item) {
     items.remove(item);
     item.setCart(null);
+  }
+
+  public void clear() {
+    items.clear();
   }
 }
