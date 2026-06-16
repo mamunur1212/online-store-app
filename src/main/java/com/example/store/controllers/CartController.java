@@ -9,6 +9,7 @@ import com.example.store.mapper.CartMapper;
 import com.example.store.repositories.CartRepository;
 import com.example.store.repositories.ProductRepository;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,12 @@ public class CartController {
     var uri = uriBuilder.path("/carts/{id}").buildAndExpand(cartDto.getId()).toUri();
 
     return ResponseEntity.created(uri).body(cartDto);
+  }
+
+  @GetMapping
+  public ResponseEntity<List<CartDto>> getAllCarts() {
+    var carts = cartRepository.findAll().stream().map(cartMapper::toDto).toList();
+    return ResponseEntity.ok(carts);
   }
 
   @GetMapping("/{cartId}")
