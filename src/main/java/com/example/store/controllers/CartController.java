@@ -5,6 +5,7 @@ import com.example.store.dtos.CartDto;
 import com.example.store.dtos.CartItemDto;
 import com.example.store.dtos.UpdateCartItemRequest;
 import com.example.store.services.CartService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/carts")
+@Tag(name = "Carts")
 public class CartController {
   private final CartService cartService;
 
